@@ -4,7 +4,7 @@ function Get-TargetResource
     param
     (   
         [parameter(Mandatory)] 
-        [string] $InstanceName = "MSSQLSERVER",
+        [string] $InstanceName,
 
         [parameter(Mandatory)] 
         [ValidateNotNullOrEmpty()]
@@ -12,35 +12,36 @@ function Get-TargetResource
         
         [parameter(Mandatory)] 
         [ValidateNotNullOrEmpty()]
-        [string] $Configurationfile,
+        [string] $ConfigurationFile,
+
+        [parameter()]
+        [string] $SkipRules="",
 
         [parameter(Mandatory)]
-        [PSCredential] $DomainAdministratorCredential  
+        [PSCredential] $DomainAdministratorCredential,
+        
+        [parameter()]
+        [boolean]$RestartMachine=$false
     )
 
-    $list = Get-Service -Name MSSQL*
-    $retInstanceName = $null
-
-    if ($InstanceName -eq "MSSQLSERVER")
+    $returnValue = @{}
+    $service = Get-Service | ?{$_.DisplayName -eq "SQL Server ($InstanceName)"}
+    if($service -ne $null)
     {
-        if ($list.Name -contains "MSSQLSERVER")
-        {
-            $retInstanceName = $InstanceName
-        }
+        $returnValue.Add("InstanceName","$InstanceName")
     }
-    elseif ($list.Name -contains $("MSSQL$" + $InstanceName))
+    if(Get-Item (Join-Path $SourcePath -ChildPath "Setup.exe") -ErrorAction SilentlyContinue)
     {
-        Write-Verbose -Message "SQL Instance $InstanceName is present"
-        $retInstanceName = $InstanceName
+        $returnValue.Add("SourcePath","$SourcePath")
+    }
+    if(Get-Item $Configurationfile -ErrorAction SilentlyContinue)
+    {
+        $returnValue.Add("Configurationfile","$Configurationfile")
     }
 
-    $returnValue = @{
-        InstanceName = $retInstanceName
-        SourcePath = $SourcePath
-        Configurationfile = $Configurationfile
-        DomainAdministratorCredential = $DomainAdministratorCredential
-    }
-
+    $returnValue.Add("DomainAdministratorCredential","$DomainAdministratorCredential")
+    $returnValue.Add("SkipRules","$SkipRules")
+    $returnValue.Add("RestartMachine","$RestartMachine")
     return $returnValue
 }
 
@@ -49,7 +50,7 @@ function Set-TargetResource
     param
     (   
         [parameter(Mandatory)] 
-        [string] $InstanceName = "MSSQLSERVER",
+        [string] $InstanceName,
 
         [parameter(Mandatory)] 
         [ValidateNotNullOrEmpty()]
@@ -57,79 +58,63 @@ function Set-TargetResource
         
         [parameter(Mandatory)] 
         [ValidateNotNullOrEmpty()]
-        [string] $Configurationfile,
+        [string] $ConfigurationFile,
+
+        [parameter()]
+        [string] $SkipRules="",
 
         [parameter(Mandatory)]
-        [PSCredential] $DomainAdministratorCredential  
+        [PSCredential] $DomainAdministratorCredential,
+        
+        [parameter()]
+        [boolean]$RestartMachine=$false
     )
 
-    $LogFile = "C:\sqlserverinstall.log"
-    $cmd = Join-Path $SourcePath -ChildPath "Setup.exe"
-    $cmd += " /CONFIGURATIONFILE=$Configurationfile "   
-    $cmd += " > $LogFile 2>&1 "
+    $SchedledTask='<?xml version="1.0" encoding="UTF-16"?> <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">   <RegistrationInfo>     <Date>2014-10-17T11:39:13.9515958</Date>     <Author>ECO2G\Administrator</Author>   </RegistrationInfo>   <Triggers />   <Principals>     <Principal id="Author">       <UserId>ECO2G\Administrator</UserId>       <LogonType>Password</LogonType>       <RunLevel>HighestAvailable</RunLevel>     </Principal>   </Principals>   <Settings>     <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>     <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>     <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>     <AllowHardTerminate>false</AllowHardTerminate>     <StartWhenAvailable>false</StartWhenAvailable>     <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>     <IdleSettings>       <StopOnIdleEnd>true</StopOnIdleEnd>       <RestartOnIdle>false</RestartOnIdle>     </IdleSettings>     <AllowStartOnDemand>true</AllowStartOnDemand>     <Enabled>true</Enabled>     <Hidden>false</Hidden>     <RunOnlyIfIdle>false</RunOnlyIfIdle>     <DisallowStartOnRemoteAppSession>false</DisallowStartOnRemoteAppSession>     <UseUnifiedSchedulingEngine>false</UseUnifiedSchedulingEngine>     <WakeToRun>false</WakeToRun>     <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>     <Priority>7</Priority>   </Settings>   <Actions Context="Author">     <Exec>       <Command>__SETUP_PATH__</Command>       <Arguments>__SETUP_ARGUMENTS__</Arguments>     </Exec>   </Actions> </Task>'
+    $SetupPath = Join-Path $SourcePath -ChildPath "Setup.exe"
+    $SetupArguments = " $SkipRules "
+    $SetupArguments += " /CONFIGURATIONFILE=$Configurationfile "   
+    $SchedledTask = $SchedledTask -replace "__USERID__","$($DomainAdministratorCredential.GetNetworkCredential().Username)"
+    $SchedledTask = $SchedledTask -replace "__SETUP_PATH__","$SetupPath"
+    $SchedledTask = $SchedledTask -replace "__SETUP_ARGUMENTS__","$SetupArguments"
 
-    ($oldToken, $context, $newToken) = ImpersonateAs -cred $DomainAdministratorCredential
+    Write-Verbose -Message "SQL installation command: $SetupPath $SetupArguments"
     try
     {
-        $o=Invoke-Command -ComputerName localhost -ScriptBlock { Param([string]$expr)Invoke-Expression $expr} -Credential $DomainAdministratorCredential -ArgumentList $cmd
-        Write-Verbose -Message "$o"
-    }
-    finally
-    {
-    }
-
-    $installStatus = $false
-    try
-    {
-        # SQL Server log folder
-        $LogPath = Join-Path $env:ProgramFiles "Microsoft SQL Server\110\Setup Bootstrap\Log"        
-        $sqlLog = Get-Content "$LogPath\summary.txt"
-        if($sqlLog -ne $null)
+        Write-Verbose -Message "Creating scheduled task to install SQL server ..."
+        Write-Verbose -Message "$SchedledTask"
+        Register-ScheduledTask -TaskName "install sql" -Xml "$SchedledTask" -User "$($DomainAdministratorCredential.GetNetworkCredential().Username)" -Password "$($DomainAdministratorCredential.GetNetworkCredential().Password)"
+        Write-Verbose -Message "Scheduled task created."
+        Write-Verbose -Message "Executing scheduled task to install SQL server ..."
+        Get-ScheduledTask -TaskName "install sql" | Start-ScheduledTask
+        Write-Verbose -Message "Waiting for the scheduled task  to be finished ..."
+        Start-Sleep 10
+        $ScheduledTaskState = (Get-ScheduledTask -TaskName "install sql").State
+        While($ScheduledTaskState -eq "Running")
         {
-            $message = $sqlLog | fl
-            if($message -ne $null)
-            {
-                # sample report when the install is succesful
-                #    Overall summary:
-                #    Final result:                  Passed
-                #    Exit code (Decimal):           0
-                $finalResult = $message[1] | Out-String     
-                $exitCode = $message[2] | Out-String    
-
-                if(($finalResult.Contains("Passed") -eq $True) -and ($exitCode.Contains("0") -eq $True))
-                {                     
-                    $installStatus = $true
-                }                
-             }
+            $ScheduledTaskState = (Get-ScheduledTask -TaskName "install sql").State
+            Start-Sleep 10    
         }
+        Write-Verbose -Message "Scheduled task finished."
     }
     catch
     {
-        Write-Verbose "SQL Installation did not succeed."
+        Write-Verbose -Message "SQL setup command execution failed. $($Error[0].Exception.Message)"
     }
     finally
     {
-        if ($context)
+        $summary = Get-Content "C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Log\Summary.txt"
+        if(($summary -match ".*Final result:                  Passed.*") -and ($summary -match ".*Exit code \(Decimal\):           0.*"))
         {
-            $context.Undo()
-            $context.Dispose()
-            CloseUserToken($newToken)
+            Write-Verbose "Looks like SQL installation process finished succesfuly."
+            if($RestartMachine)
+            {
+                Write-Verbose "Restart requested."
+                $global:DSCMachineStatus = 1
+            }
         }
+        Get-ScheduledTask -TaskName "install sql" | Unregister-ScheduledTask -ErrorAction SilentlyContinue
     }
-    if($installStatus -eq $true)
-    {
-        $global:DSCMachineStatus = 1
-    }
-    else    
-    {        
-        # Throw an error message indicating failure to install SQL Server install 
-        $errorId = "InValidSQLServerInstall";
-        $exceptionStr = "SQL Server installation did not succeed. For more details please refer to the logs under $LogPath folder."
-        $errorCategory = [System.Management.Automation.ErrorCategory]::InvalidResult;
-        $exception = New-Object System.InvalidOperationException $exceptionStr; 
-        $errorRecord = New-Object System.Management.Automation.ErrorRecord $exception, $errorId, $errorCategory, $null
-        $PSCmdlet.ThrowTerminatingError($errorRecord);
-     }
 }
 
 function Test-TargetResource
@@ -138,7 +123,7 @@ function Test-TargetResource
     param
     (   
         [parameter(Mandatory)] 
-        [string] $InstanceName = "MSSQLSERVER",
+        [string] $InstanceName,
 
         [parameter(Mandatory)] 
         [ValidateNotNullOrEmpty()]
@@ -146,69 +131,40 @@ function Test-TargetResource
         
         [parameter(Mandatory)] 
         [ValidateNotNullOrEmpty()]
-        [string] $Configurationfile,
+        [string] $ConfigurationFile,
+
+        [parameter()]
+        [string] $SkipRules="",
 
         [parameter(Mandatory)]
-        [PSCredential] $DomainAdministratorCredential  
+        [PSCredential] $DomainAdministratorCredential,
+        
+        [parameter()]
+        [boolean]$RestartMachine=$false
     )
 
-    $info = Get-TargetResource -InstanceName $InstanceName -Configurationfile  $Configurationfile -DomainAdministratorCredential $DomainAdministratorCredential -SourcePath $SourcePath
-    
-    return ($info.InstanceName -eq $InstanceName)
-}
-
-#region Additional functions
-function Get-ImpersonatetLib
-{
-    if ($script:ImpersonateLib)
+    $retValue = $false
+    $status = Get-TargetResource -InstanceName $InstanceName -SourcePath $SourcePath -Configurationfile  $Configurationfile -SkipRules $SkipRules -DomainAdministratorCredential $DomainAdministratorCredential 
+    if($status["InstanceName"] -eq $InstanceName)
     {
-        return $script:ImpersonateLib
-    }
-
-    $sig = @'
-[DllImport("advapi32.dll", SetLastError = true)]
-public static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
-
-[DllImport("kernel32.dll")]
-public static extern Boolean CloseHandle(IntPtr hObject);
-'@ 
-   $script:ImpersonateLib = Add-Type -PassThru -Namespace 'Lib.Impersonation' -Name ImpersonationLib -MemberDefinition $sig 
-
-   return $script:ImpersonateLib
-    
-}
-
-function ImpersonateAs([PSCredential] $cred)
-{
-    [IntPtr] $userToken = [Security.Principal.WindowsIdentity]::GetCurrent().Token
-    $userToken
-    $ImpersonateLib = Get-ImpersonatetLib
-
-    $bLogin = $ImpersonateLib::LogonUser($cred.GetNetworkCredential().UserName, $cred.GetNetworkCredential().Domain, $cred.GetNetworkCredential().Password, 
-    9, 0, [ref]$userToken)
-    
-    if ($bLogin)
-    {
-        $Identity = New-Object Security.Principal.WindowsIdentity $userToken
-        $context = $Identity.Impersonate()
+        Write-Verbose -Message "Looks like we already have SQL instance with name $InstanceName installed on this machine. We'll skip installation."
+        $retValue = $true
     }
     else
     {
-        throw "Can't Logon as User $cred.GetNetworkCredential().UserName."
+        Write-Verbose -Message "SQL instance not found on local machine."
+        if(($status["SourcePath"] -eq $SourcePath) -and ($status["Configurationfile"] -eq $Configurationfile))
+        {
+            Write-Verbose -Message "Setup and configuration file found."
+        }
+        else
+        {
+            Write-Verbose -Message "Can't find setup and/or configuration file. We'll skip installation."
+            $retValue=$true
+        }
     }
-    $context, $userToken
+    return $retValue
 }
 
-function CloseUserToken([IntPtr] $token)
-{
-    $ImpersonateLib = Get-ImpersonatetLib
-
-    $bLogin = $ImpersonateLib::CloseHandle($token)
-    if (!$bLogin)
-    {
-        throw "Can't close token"
-    }
-}
-#endregion Additional functions
 
 Export-ModuleMember -Function *-TargetResource
