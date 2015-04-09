@@ -44,7 +44,7 @@ function RestartClusteredSqlServer()
         $cluster = Get-Cluster
         $cluster | Stop-ClusterGroup -Name $ClusterGroupName
         $cluster | Start-ClusterGroup -Name $ClusterGroupName
-	    Write-Verbose -Message "Clustered SQL instance restared."
+	    Write-Verbose -Message "Clustered SQL instance restarted."
     }
     catch
     {
@@ -325,39 +325,64 @@ function Test-TargetResource
         [string] $ClusterGroupName=""
     )
 
-    Write-Verbose -Message "Test SQL Service configuration ..."
-
-    $SAPassword = $SqlAdministratorCredential.GetNetworkCredential().Password
-    $ServiceAccount = $ServiceCredential.UserName
-
-    $ret = IsSQLLogin -SqlInstance $InstanceName -SAPassword $SAPassword -Login $ServiceAccount
-    if ($false -eq $ret)
+    try 
     {
-        Write-Verbose -Message "$ServiceAccount is NOT in SqlServer login"
-        return $false
-    }
 
-    $ret = IsSrvRoleMember -SqlInstance $InstanceName -SAPassword $SAPassword -Login $ServiceCredential.UserName
-    if ($false -eq $ret)
+        $ErrorActionPreference = "Stop"
+        ($oldToken, $context, $newToken) = ImpersonateAs -cred $DomainAdministratorCredential
+        Write-Verbose -Message "Test SQL Service configuration ..."
+        if(($ClusterGroupName -eq "") -or (($ClusterGroupName -ne "") -and (Get-ClusterGroup -name "$ClusterGroupName").OwnerNode.Name -eq $env:ComputerName))
+        {
+            $SAPassword = $SqlAdministratorCredential.GetNetworkCredential().Password
+            $ServiceAccount = $ServiceCredential.UserName
+
+            $ret = IsSQLLogin -SqlInstance $InstanceName -SAPassword $SAPassword -Login $ServiceAccount
+            if ($false -eq $ret)
+            {
+                Write-Verbose -Message "$ServiceAccount is NOT in SqlServer login"
+                return $false
+            }
+
+            $ret = IsSrvRoleMember -SqlInstance $InstanceName -SAPassword $SAPassword -Login $ServiceCredential.UserName
+            if ($false -eq $ret)
+            {
+                Write-Verbose -Message "$ServiceCredential.UserName is NOT in admin role"
+                return $false
+            }
+
+            $ret = IsSrvRoleMember -SqlInstance $InstanceName -SAPassword $SAPassword -Login "NT AUTHORITY\SYSTEM"
+            if ($false -eq $ret)
+            {
+                Write-Verbose -Message "NT AUTHORITY\SYSTEM is NOT in admin role"
+                return $false
+            }
+
+            $ret = IsHAEnabled -SqlInstance $InstanceName -SAPassword $SAPassword
+            if ($false -eq $ret)
+            {
+                Write-Verbose -Message "$InstanceName does NOT enable SQL HA."
+                return $false
+            }
+        }
+        else
+        {
+            Write-Verbose -Message "ClusterGroupName parameter not equals `"`"  and $($env:ComputerName) cluster node don't own cluster group $ClusterGroupName. Thus we'll skip configuring SQL HA."
+            $ret=$true
+        }
+    }
+    catch
     {
-        Write-Verbose -Message "$ServiceCredential.UserName is NOT in admin role"
-        return $false
+        Write-Verbose -Message "Error occured. Error: $($Error[0].Exception.Message)"
     }
-
-    $ret = IsSrvRoleMember -SqlInstance $InstanceName -SAPassword $SAPassword -Login "NT AUTHORITY\SYSTEM"
-    if ($false -eq $ret)
+    finally
     {
-        Write-Verbose -Message "NT AUTHORITY\SYSTEM is NOT in admin role"
-        return $false
-    }
-
-    $ret = IsHAEnabled -SqlInstance $InstanceName -SAPassword $SAPassword
-    if ($false -eq $ret)
-    {
-        Write-Verbose -Message "$InstanceName does NOT enable SQL HA."
-        return $false
-    }
-
+        if ($context)
+        {
+            $context.Undo()
+            $context.Dispose()
+            CloseUserToken($newToken)
+        }
+    }      
     return $ret
 }
 
