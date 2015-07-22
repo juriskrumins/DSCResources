@@ -48,10 +48,23 @@ Configuration cWebAppPools {
                     }
                     if($WebAppPools["$WebAppPool"][5] -ne $null)
                     {
-                        cWebAppPoolEnable32BitAppOnWin64 cWebAppPoolEnable32BitAppOnWin641
+                        cWebAppPoolEnable32BitAppOnWin64 "cWebAppPoolEnable32BitAppOnWin64$random"
                         {
                             AppPoolEnable32BitAppOnWin64 = $WebAppPools["$WebAppPool"][5]
                             AppPoolName = "$WebAppPool"
+                            DependsOn = "[xWebAppPool]xWebAppPool$random"
+                        }
+                    }
+                    if($WebAppPools["$WebAppPool"][6] -ne $null)
+                    {
+                        $Username = if($WebAppPools["$WebAppPool"][7] -ne $null) {$WebAppPools["$WebAppPool"][7]}else{""}
+                        $Password = if($WebAppPools["$WebAppPool"][8] -ne $null) {$WebAppPools["$WebAppPool"][8]}else{""}
+                        cWebAppPoolIdentity "cWebAppPoolIdentity$random"
+                        {
+                            AppPoolName = "$WebAppPool"
+                            IdentityType = $WebAppPools["$WebAppPool"][6]
+                            Password = $Password
+                            Username = $Username
                             DependsOn = "[xWebAppPool]xWebAppPool$random"
                         }
                     }

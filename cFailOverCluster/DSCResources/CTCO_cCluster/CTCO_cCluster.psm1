@@ -3,6 +3,9 @@
 # domain and assign the StaticIPAddress to the cluster. Then, it will add current node to the cluster.
 #
 
+#Import DSC helper functions module
+Import-Module -name DSCHelperFunctions
+
 #
 # The Get-TargetResource cmdlet.
 #
@@ -109,17 +112,14 @@ function Set-TargetResource
         if ($bCreate)
         {
             Write-Verbose -Message "Cluster $Name is NOT present"
-
-            New-Cluster -Name $Name -Node $env:COMPUTERNAME -StaticAddress $StaticIPAddress -NoStorage
-
+            Clear-ClusterNode -Force -ErrorAction SilentlyContinue
+            New-Cluster -Name $Name -Node $env:COMPUTERNAME -StaticAddress $StaticIPAddress -NoStorage:$noStorage
             Write-Verbose -Message "Created Cluster $Name"
         }
         else
         {
             Write-Verbose -Message "Add node to Cluster $Name ..."
-
             Write-Verbose -Message "Add-ClusterNode $env:COMPUTERNAME to cluster $Name"
-                           
             $list = Get-ClusterNode -Cluster $Name
             foreach ($node in $list)
             {
@@ -128,16 +128,14 @@ function Set-TargetResource
                     if ($node.State -eq "Down")
                     {
                         Write-Verbose -Message "node $env:COMPUTERNAME was down, need remove it from the list."
-
                         Remove-ClusterNode $env:COMPUTERNAME -Cluster $Name -Force
                     }
                 }
             }
 
+            Clear-ClusterNode -Force -ErrorAction SilentlyContinue
             Add-ClusterNode -Name $env:COMPUTERNAME -Cluster $Name -NoStorage:$noStorage
-            
             Write-Verbose -Message "Added node to Cluster $Name"
-        
         }
     }
     finally
@@ -253,57 +251,4 @@ function Test-TargetResource
     }
 
     $bRet
-}
-
-
-function Get-ImpersonatetLib
-{
-    if ($script:ImpersonateLib)
-    {
-        return $script:ImpersonateLib
-    }
-
-    $sig = @'
-[DllImport("advapi32.dll", SetLastError = true)]
-public static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
-
-[DllImport("kernel32.dll")]
-public static extern Boolean CloseHandle(IntPtr hObject);
-'@ 
-   $script:ImpersonateLib = Add-Type -PassThru -Namespace 'Lib.Impersonation' -Name ImpersonationLib -MemberDefinition $sig 
-
-   return $script:ImpersonateLib
-    
-}
-
-function ImpersonateAs([PSCredential] $cred)
-{
-    [IntPtr] $userToken = [Security.Principal.WindowsIdentity]::GetCurrent().Token
-    $userToken
-    $ImpersonateLib = Get-ImpersonatetLib
-
-    $bLogin = $ImpersonateLib::LogonUser($cred.GetNetworkCredential().UserName, $cred.GetNetworkCredential().Domain, $cred.GetNetworkCredential().Password, 
-    9, 0, [ref]$userToken)
-    
-    if ($bLogin)
-    {
-        $Identity = New-Object Security.Principal.WindowsIdentity $userToken
-        $context = $Identity.Impersonate()
-    }
-    else
-    {
-        throw "Can't Logon as User $cred.GetNetworkCredential().UserName."
-    }
-    $context, $userToken
-}
-
-function CloseUserToken([IntPtr] $token)
-{
-    $ImpersonateLib = Get-ImpersonatetLib
-
-    $bLogin = $ImpersonateLib::CloseHandle($token)
-    if (!$bLogin)
-    {
-        throw "Can't close token"
-    }
 }

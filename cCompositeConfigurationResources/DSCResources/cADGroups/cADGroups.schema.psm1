@@ -12,11 +12,22 @@ Configuration cADGroups {
         foreach($GroupName in $GroupNames.keys)
         {
             $random=Get-Random
-            cGroup "Group$random"
+            if(($GroupNames["$GroupName"]).Count -eq 0)
             {
-	            GroupName = "$GroupName"
-	            DomainAdministratorCredential = $DomainAdministratorCredential
-                Members = $GroupNames["$GroupName"]
+                cGroup "Group$random"
+                {
+	                GroupName = "$GroupName"
+	                DomainAdministratorCredential = $DomainAdministratorCredential
+                }
+            }
+            else
+            {
+                cGroup "Group$random"
+                {
+	                GroupName = "$GroupName"
+	                DomainAdministratorCredential = $DomainAdministratorCredential
+                    Members = $GroupNames["$GroupName"]
+                }
             }
         }
 }

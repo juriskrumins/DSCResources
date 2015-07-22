@@ -633,7 +633,11 @@ function compareWebsiteBindings
         {
             foreach($Binding in $BindingInfo)
             {
-                $ActualBinding = $ActualBindingObjects | ?{$_.Port -eq $Binding.CimInstanceProperties["Port"].Value}
+                $ActualBinding = $ActualBindingObjects | Where-Object{
+                                                                        $_.Port -eq $Binding.CimInstanceProperties["Port"].Value -and 
+                                                                        $_.Protocol -eq $Binding.CimInstanceProperties["Protocol"].Value -and 
+                                                                        $_.IPAddress -eq $Binding.CimInstanceProperties["IPAddress"].Value
+                                                                    }
                 if ($ActualBinding -ne $null)
                 {
                     if([string]$ActualBinding.Protocol -ne [string]$Binding.CimInstanceProperties["Protocol"].Value)
@@ -662,17 +666,27 @@ function compareWebsiteBindings
                         break
                     }
 
-                    if([string]$ActualBinding.CertificateThumbprint -ne (Get-CertificateThumbprintFromSubjectName -CertificateSubjectName "$([string]$Binding.CimInstanceProperties["CertificateSubjectName"].Value)" -CertificateStoreName "$([string]$Binding.CimInstanceProperties["CertificateStoreName"].Value)"))
+                    $CertificateSubjectName = [string]$Binding.CimInstanceProperties["CertificateSubjectName"].Value
+                    $CertificateStoreName = [string]$Binding.CimInstanceProperties["CertificateStoreName"].Value
+                    if($CertificateSubjectName -ne "" -and $CertificateStoreName -ne "")
                     {
-                        $BindingNeedsUpdating = $true
-                        break
+                        $CertificateThumbprint=Get-CertificateThumbprintFromSubjectName -CertificateSubjectName "$($CertificateSubjectName)" -CertificateStoreName "$($CertificateStoreName)"
+                        Write-Verbose -Message "CertificateSubjectName: $CertificateSubjectName "
+                        Write-Verbose -Message "CertificateStoreName: $CertificateStoreName"
+                        Write-Verbose -Message "CertificateThumbprint: $CertificateThumbprint"
+                        if([string]$ActualBinding.CertificateThumbprint -ne [string]$CertificateThumbprint)
+                        {
+                            $BindingNeedsUpdating = $true
+                            break
+                        }
+
+                        if([string]$ActualBinding.CertificateStoreName -ne [string]$Binding.CimInstanceProperties["CertificateStoreName"].Value)
+                        {
+                            $BindingNeedsUpdating = $true
+                            break
+                        }
                     }
 
-                    if([string]$ActualBinding.CertificateStoreName -ne [string]$Binding.CimInstanceProperties["CertificateStoreName"].Value)
-                    {
-                        $BindingNeedsUpdating = $true
-                        break
-                    }
                 }
                 else 
                 {
