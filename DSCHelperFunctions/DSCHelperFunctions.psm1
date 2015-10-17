@@ -49,3 +49,34 @@ function CloseUserToken([IntPtr] $token)
         throw "Can't close token"
     }
 }
+
+function Set-ProcessPriority
+{
+    [CmdletBinding()]
+    [Alias()]
+    [OutputType([String])]
+    Param
+    (
+        [Double]
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        $Id,
+        [String]
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateSet("Idle","BelowNormal","Normal","AboveNormal","High","Realtime")]
+        $Priority
+    )
+    try 
+    {
+        Write-Verbose "Setting process's with Id $Id priority to $Priority"
+        $ErrorActionPreference="Stop"
+        $Process=Get-Process -Id $Id
+        $Process.PriorityClass="$Priority"
+    }
+    catch 
+    {
+        Write-Verbose "Error occured $_"
+        "Error occured $_"
+    }
+}
