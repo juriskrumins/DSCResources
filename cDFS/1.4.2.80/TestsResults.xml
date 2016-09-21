@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="154" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2015-12-17" time="21:41:05">
+  <environment user="appveyor" machine-name="APPVEYOR-VM" cwd="C:\projects\cdfs" user-domain="APPVEYOR-VM" platform="Microsoft Windows Server 2012 R2 Datacenter|C:\windows|\Device\Harddisk0\Partition1" nunit-version="2.5.8.0" os-version="6.3.9600" clr-version="4.0.30319.42000" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Powershell" name="Pester" executed="True" result="Success" success="True" time="107.6036" asserts="0">
+    <results>
+      <test-suite type="TestFixture" name="Text files formatting" executed="True" result="Success" success="True" time="6.6566" asserts="0" description="Text files formatting">
+        <results>
+          <test-case description="Doesn't use Unicode encoding" name="Text files formatting.Doesn't use Unicode encoding" time="6.3949" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="Uses spaces for indentation, not tabs" name="Text files formatting.Uses spaces for indentation, not tabs" time="0.2617" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="PowerShell DSC resource modules" executed="True" result="Success" success="True" time="57.362" asserts="0" description="PowerShell DSC resource modules">
+        <results>
+          <test-case description="passes Invoke-ScriptAnalyzer" name="PowerShell DSC resource modules.passes Invoke-ScriptAnalyzer" time="47.6215" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="all .psm1 files don't have parse errors" name="PowerShell DSC resource modules.all .psm1 files don't have parse errors" time="0.2764" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscResource" name="PowerShell DSC resource modules.should pass Test-xDscResource" time="3.7512" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscSchema" name="PowerShell DSC resource modules.should pass Test-xDscSchema" time="0.4819" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscResource" name="PowerShell DSC resource modules.should pass Test-xDscResource" time="0.7818" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscSchema" name="PowerShell DSC resource modules.should pass Test-xDscSchema" time="0.0868" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscResource" name="PowerShell DSC resource modules.should pass Test-xDscResource" time="0.5044" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscSchema" name="PowerShell DSC resource modules.should pass Test-xDscSchema" time="0.1553" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscResource" name="PowerShell DSC resource modules.should pass Test-xDscResource" time="1.0353" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscSchema" name="PowerShell DSC resource modules.should pass Test-xDscSchema" time="0.7282" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscResource" name="PowerShell DSC resource modules.should pass Test-xDscResource" time="1.1987" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should pass Test-xDscSchema" name="PowerShell DSC resource modules.should pass Test-xDscSchema" time="0.7405" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroup\Get-TargetResource" executed="True" result="Success" success="True" time="4.5639" asserts="0" description="BMD_cDFSRepGroup\Get-TargetResource">
+        <results>
+          <test-case description="should return absent replication group" name="BMD_cDFSRepGroup\Get-TargetResource.should return absent replication group" time="3.7893" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroup\Get-TargetResource.should call the expected mocks" time="0.2466" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return correct replication group" name="BMD_cDFSRepGroup\Get-TargetResource.should return correct replication group" time="0.5101" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroup\Get-TargetResource.should call the expected mocks" time="0.018" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroup\Set-TargetResource" executed="True" result="Success" success="True" time="14.9614" asserts="0" description="BMD_cDFSRepGroup\Set-TargetResource">
+        <results>
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="1.7245" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0429" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="1.5018" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.4566" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.5107" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0373" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="1.2034" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0379" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="1.2002" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.041" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.4668" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0386" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.7077" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.7192" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.3037" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.7015" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="1.7946" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.051" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.3601" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0515" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.2199" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0583" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.1885" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0606" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.9572" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.0566" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.4934" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.2217" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroup\Set-TargetResource.should not throw error" time="0.5221" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Set-TargetResource.should call expected Mocks" time="0.2318" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroup\Test-TargetResource" executed="True" result="Success" success="True" time="9.05" asserts="0" description="BMD_cDFSRepGroup\Test-TargetResource">
+        <results>
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.7387" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0223" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.7419" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0193" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.478" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0211" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.7043" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0198" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.2877" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.1887" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.2715" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0224" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.7441" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0174" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return true" name="BMD_cDFSRepGroup\Test-TargetResource.should return true" time="0.7249" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0238" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return true" name="BMD_cDFSRepGroup\Test-TargetResource.should return true" time="0.4991" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.1987" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.3021" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.2001" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.2979" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0297" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="1.172" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0354" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.4642" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0288" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return true" name="BMD_cDFSRepGroup\Test-TargetResource.should return true" time="0.2931" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.1946" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroup\Test-TargetResource.should return false" time="0.2814" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroup\Test-TargetResource.should call expected Mocks" time="0.0272" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupConnection\Get-TargetResource" executed="True" result="Success" success="True" time="2.2254" asserts="0" description="BMD_cDFSRepGroupConnection\Get-TargetResource">
+        <results>
+          <test-case description="should return absent replication group connection" name="BMD_cDFSRepGroupConnection\Get-TargetResource.should return absent replication group connection" time="1.9255" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroupConnection\Get-TargetResource.should call the expected mocks" time="0.0105" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return correct replication group" name="BMD_cDFSRepGroupConnection\Get-TargetResource.should return correct replication group" time="0.2802" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroupConnection\Get-TargetResource.should call the expected mocks" time="0.0092" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupConnection\Set-TargetResource" executed="True" result="Success" success="True" time="2.488" asserts="0" description="BMD_cDFSRepGroupConnection\Set-TargetResource">
+        <results>
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should not throw error" time="0.5066" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should call expected Mocks" time="0.0184" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should not throw error" time="0.4333" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should call expected Mocks" time="0.0233" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should not throw error" time="0.2768" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should call expected Mocks" time="0.0179" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should not throw error" time="0.4281" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should call expected Mocks" time="0.02" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should not throw error" time="0.2766" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should call expected Mocks" time="0.0212" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should not throw error" time="0.446" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Set-TargetResource.should call expected Mocks" time="0.0198" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupConnection\Test-TargetResource" executed="True" result="Success" success="True" time="2.4615" asserts="0" description="BMD_cDFSRepGroupConnection\Test-TargetResource">
+        <results>
+          <test-case description="should return false" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should return false" time="0.9961" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should call expected Mocks" time="0.01" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should return false" time="0.262" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should call expected Mocks" time="0.012" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should return false" time="0.2402" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should call expected Mocks" time="0.0091" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should return false" time="0.2536" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should call expected Mocks" time="0.0102" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should return false" time="0.2481" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should call expected Mocks" time="0.0097" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return true" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should return true" time="0.2375" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupConnection\Test-TargetResource.should call expected Mocks" time="0.173" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupFolder\Get-TargetResource" executed="True" result="Success" success="True" time="1.474" asserts="0" description="BMD_cDFSRepGroupFolder\Get-TargetResource">
+        <results>
+          <test-case description="should throw RegGroupFolderMissingError error" name="BMD_cDFSRepGroupFolder\Get-TargetResource.should throw RegGroupFolderMissingError error" time="1.3604" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroupFolder\Get-TargetResource.should call the expected mocks" time="0.0095" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return correct replication group" name="BMD_cDFSRepGroupFolder\Get-TargetResource.should return correct replication group" time="0.0951" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroupFolder\Get-TargetResource.should call the expected mocks" time="0.009" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupFolder\Set-TargetResource" executed="True" result="Success" success="True" time="0.4521" asserts="0" description="BMD_cDFSRepGroupFolder\Set-TargetResource">
+        <results>
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should not throw error" time="0.1431" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should call expected Mocks" time="0.0094" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should not throw error" time="0.0876" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should call expected Mocks" time="0.0137" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should not throw error" time="0.0871" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should call expected Mocks" time="0.0101" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should not throw error" time="0.0877" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Set-TargetResource.should call expected Mocks" time="0.0134" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupFolder\Test-TargetResource" executed="True" result="Success" success="True" time="0.8844" asserts="0" description="BMD_cDFSRepGroupFolder\Test-TargetResource">
+        <results>
+          <test-case description="should throw RegGroupFolderMissingError error" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should throw RegGroupFolderMissingError error" time="0.1508" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should call expected Mocks" time="0.0096" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return true" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should return true" time="0.0886" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should call expected Mocks" time="0.0108" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should return false" time="0.0873" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should call expected Mocks" time="0.0091" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should return false" time="0.0853" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should call expected Mocks" time="0.012" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should return false" time="0.1678" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should call expected Mocks" time="0.01" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should return false" time="0.2415" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupFolder\Test-TargetResource.should call expected Mocks" time="0.0117" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupMembership\Get-TargetResource" executed="True" result="Success" success="True" time="1.9883" asserts="0" description="BMD_cDFSRepGroupMembership\Get-TargetResource">
+        <results>
+          <test-case description="should throw RegGroupFolderMissingError error" name="BMD_cDFSRepGroupMembership\Get-TargetResource.should throw RegGroupFolderMissingError error" time="1.4858" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroupMembership\Get-TargetResource.should call the expected mocks" time="0.0108" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return correct replication group" name="BMD_cDFSRepGroupMembership\Get-TargetResource.should return correct replication group" time="0.4813" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call the expected mocks" name="BMD_cDFSRepGroupMembership\Get-TargetResource.should call the expected mocks" time="0.0105" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupMembership\Set-TargetResource" executed="True" result="Success" success="True" time="1.2564" asserts="0" description="BMD_cDFSRepGroupMembership\Set-TargetResource">
+        <results>
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should not throw error" time="0.4774" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should call expected Mocks" time="0.01" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should not throw error" time="0.252" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should call expected Mocks" time="0.01" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should not throw error" time="0.2361" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should call expected Mocks" time="0.0104" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should not throw error" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should not throw error" time="0.2497" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Set-TargetResource.should call expected Mocks" time="0.0108" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="BMD_cDFSRepGroupMembership\Test-TargetResource" executed="True" result="Success" success="True" time="1.7795" asserts="0" description="BMD_cDFSRepGroupMembership\Test-TargetResource">
+        <results>
+          <test-case description="should throw RegGroupMembershipMissingError error" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should throw RegGroupMembershipMissingError error" time="0.4779" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should call expected Mocks" time="0.0142" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return true" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should return true" time="0.2459" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should call expected Mocks" time="0.0103" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should return false" time="0.2543" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should call expected Mocks" time="0.0113" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should return false" time="0.2511" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should call expected Mocks" time="0.0088" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should return false" time="0.244" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should call expected Mocks" time="0.0113" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should return false" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should return false" time="0.2409" asserts="0" success="True" result="Success" executed="True" />
+          <test-case description="should call expected Mocks" name="BMD_cDFSRepGroupMembership\Test-TargetResource.should call expected Mocks" time="0.0096" asserts="0" success="True" result="Success" executed="True" />
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

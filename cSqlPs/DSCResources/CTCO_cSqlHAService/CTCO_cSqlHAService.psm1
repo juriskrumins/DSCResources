@@ -51,7 +51,7 @@ function RestartClusteredSqlServer()
     }
     catch
     {
-	    Write-Verbose -Message "Error occured. Error: $($Error[0].Exception.Message)"
+	    Write-Verbose -Message "Error occured. Error: $($_)"
     }
     finally
     {
@@ -151,7 +151,7 @@ function Get-TargetResource
         }
         catch
         {
-            Write-Verbose -Message "Error occured. Error: $($Error[0].Exception.Message)"
+            Write-Verbose -Message "Error occured. Error: $($_)"
         }
         finally
         {
@@ -242,7 +242,7 @@ function Set-TargetResource
             }
             catch
             {
-                Write-Verbose -Message "Error occured. Error: $($Error[0].Exception.Message)"
+                Write-Verbose -Message "Error occured. Error: $($_)"
             }
             finally
             {
@@ -276,7 +276,7 @@ function Set-TargetResource
                 }
                 catch
                 {
-                    Write-Verbose -Message "Error occured. Error: $($Error[0].Exception.Message)"
+                    Write-Verbose -Message "Error occured. Error: $($_)"
                 }
                 finally
                 {
@@ -375,7 +375,7 @@ function Test-TargetResource
     }
     catch
     {
-        Write-Verbose -Message "Error occured. Error: $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. Error: $($_)"
     }
     finally
     {

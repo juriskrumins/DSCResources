@@ -44,7 +44,7 @@ function Get-TargetResource
     }
     catch
     {
-        Write-Verbose -Message "Error occured. Error: $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. Error: $($_)"
     }
     return $returnValue
 
@@ -96,7 +96,7 @@ function Set-TargetResource
     }
     catch 
     {
-        Write-Verbose -Message "Error eccured. Error: $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error eccured. Error: $($_)"
     }
 
 }

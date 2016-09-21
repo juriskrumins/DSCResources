@@ -883,7 +883,7 @@ function Get-CertificateThumbprintFromSubjectName
     }
     catch
     {
-        Write-Verbose -Message "Error occured. $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. $($_)"
     }
     return $returnValue
 }
@@ -912,7 +912,7 @@ function Get-CertificateSubjectNameFromThumbprint
     }
     catch
     {
-        Write-Verbose -Message "Error occured. $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. $($_)"
     }
     return $returnValue
 }

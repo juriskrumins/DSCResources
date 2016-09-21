@@ -15,11 +15,9 @@ function Get-TargetResource
     try
     {
         $ErrorActionPreference="Stop"
-        if ((Get-PSDrive AD | Measure-Object).Count -eq 0)
-        {
-            New-PSDrive -Name AD -PSProvider ActiveDirectory -Root "//RootDSE/"
-        }
-        $ca=Get-ChildItem "AD:\CN=Certification Authorities,CN=Public Key Services,CN=Services,CN=Configuration,DC=eco2g,DC=psi-holdings,DC=com" | Where-Object {($_.ObjectClass -eq "certificationAuthority") -and ($_.Name -eq $Name)}
+        Import-Module -Name ActiveDirectory -Force
+        $ConfigurationDN = (Get-ChildItem ad: | ?{$_.Name -eq "Configuration"}).DistinguishedName
+        $ca=Get-ChildItem "AD:\CN=Enrollment Services,CN=Public Key Services,CN=Services,$($ConfigurationDN)" | Where-Object {($_.ObjectClass -eq "pKIEnrollmentService") -and ($_.Name -eq $Name)}
         if(($ca | Measure-Object).Count -ne 0)
         {
             $retValue=@{
@@ -31,7 +29,7 @@ function Get-TargetResource
     }
     catch 
     {
-        Write-Verbose -Message "Error occured. $($Error[0].Exception.Message)."
+        Write-Verbose -Message "Error occured. $($_)."
     }
     return $retValue
 }
@@ -70,7 +68,7 @@ function Set-TargetResource
         }
         catch
         {
-             Write-Verbose -Message "Error occured. $($Error[0].Exception.Message)"
+             Write-Verbose -Message "Error occured. $($_)"
         }
     }
 
@@ -111,7 +109,7 @@ function Test-TargetResource
     }
     catch
     {
-        Write-Verbose -Message "Error occured. $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. $($_)"
     }
     return $retValue
 }

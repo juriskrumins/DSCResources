@@ -38,7 +38,7 @@ function Get-TargetResource
     }
     catch 
     {
-        Write-Verbose -Message "Error occured. Error $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. Error $($_)"
     }
 	$returnValue
 }
@@ -66,11 +66,11 @@ function Set-TargetResource
         $pfxfilename=[System.IO.Path]::GetTempFileName()
         Add-Type -AssemblyName System.Security
         Get-PfxFromBase64EncodedPfx -Base64EncodedPfx $Base64EncodedPfx |  Set-Content -Path $pfxfilename
-        Import-PfxCertificate -FilePath $pfxfilename -CertStoreLocation "Cert:\$StoreLocation\$StoreName" -Exportable -Password $(ConvertTo-SecureString -String "$PfxPassword" -AsPlainText -Force)
+        Import-PfxCert -PfxCertificatePath $pfxfilename -StoreLocation $StoreLocation -StoreName $StoreName -PfxPassword $PfxPassword
     }
     catch 
     {
-        Write-Verbose -Message "Error occured. Error $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. Error $($_)"
     }
     finally
     {
@@ -132,7 +132,7 @@ function Get-CertificateFromBase64EncodedPfx
     }
     catch 
     {
-        Write-Verbose -Message "Error occured. Error $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. Error $($_)"
     }
     finally
     {
@@ -156,9 +156,30 @@ function Get-PfxFromBase64EncodedPfx
     }
     catch 
     {
-        Write-Verbose -Message "Error occured. Error $($Error[0].Exception.Message)"
+        Write-Verbose -Message "Error occured. Error $($_)"
     }
     return $ContentDecoded
+}
+
+function Import-PfxCert
+{ 
+    param(
+        [parameter(Mandatory)]
+        [String]$PfxCertificatePath,
+        [parameter(Mandatory)]
+        [string]$StoreLocation,
+        [parameter(Mandatory)]
+        [string]$StoreName,
+        [parameter(Mandatory)]
+        [string]$PfxPassword
+    )
+     
+    $pfxObj = new-object System.Security.Cryptography.X509Certificates.X509Certificate2 
+    $pfxObj.import($PfxCertificatePath,$PfxPassword,"Exportable,PersistKeySet")
+    $store = new-object System.Security.Cryptography.X509Certificates.X509Store($StoreName,$StoreLocation)
+    $store.open("MaxAllowed")
+    $store.add($pfxObj)
+    $store.close()
 }
 
 Export-ModuleMember -Function *-TargetResource

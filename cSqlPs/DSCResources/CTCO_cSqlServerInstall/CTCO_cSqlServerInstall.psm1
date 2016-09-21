@@ -99,7 +99,7 @@ function Set-TargetResource
     }
     catch
     {
-        Write-Verbose -Message "SQL setup command execution failed. $($Error[0].Exception.Message)"
+        Write-Verbose -Message "SQL setup command execution failed. $($_)"
     }
     finally
     {

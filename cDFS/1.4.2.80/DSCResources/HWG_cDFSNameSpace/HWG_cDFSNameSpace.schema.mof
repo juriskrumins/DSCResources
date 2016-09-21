@@ -1,0 +1,9 @@
+[ClassVersion("1.0.0.0"), FriendlyName("cDFSNameSpace")]
+class HWG_cDFSNameSpace : OMI_BaseResource
+{
+    [key, Description("The name of the DFS namespace.")] String Namespace;
+    [Write, Description("The computer name of the DFS Replication Group member.")] String ComputerName;
+    [Write, Description("The name of the AD Domain the DFS Replication Group this replication group is in.")] String DomainName;
+    [Write, Description("The description of the DFS namespace.")] String Description;
+    [Required, Description("If namespace should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};
